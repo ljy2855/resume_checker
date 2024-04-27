@@ -37,7 +37,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_env_variable("SECRET_KEY")
-
+OPENAI_API_KEY = get_env_variable("OPENAI_API_KEY")
+OLLAMA_API_ENDPOINT = get_env_variable("OLLAMA_API_ENDPOINT")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
