@@ -12,13 +12,20 @@ from .models import Technology
 
 class TechnologyField(forms.ModelMultipleChoiceField):
     def clean(self, value):
-        # 입력된 모든 값에 대해 처리
-        def get_or_create_tech(name):
-            tech, _ = Technology.objects.get_or_create(name=name.strip())
-            return tech
-
-        # 입력된 기술을 검사하고, 없으면 생성
-        return [get_or_create_tech(name) for name in value]
+        tech_objects = []
+        for item in value:
+            if item.isdigit():  # 입력값이 숫자인 경우, 기존 기술의 ID로 간주
+                try:
+                    tech = Technology.objects.get(id=int(item))
+                    tech_objects.append(tech)
+                except Technology.DoesNotExist:
+                    raise forms.ValidationError(
+                        "Technology with id {} does not exist.".format(item)
+                    )
+            else:  # 입력값이 숫자가 아닌 경우, 새로운 기술의 이름으로 간주
+                tech, created = Technology.objects.get_or_create(name=item.strip())
+                tech_objects.append(tech)
+        return tech_objects
 
 
 class ResumeForm(ModelForm):

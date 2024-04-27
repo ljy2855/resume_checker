@@ -21,10 +21,12 @@
     }
 
     .select2-container--default .select2-selection--multiple .select2-selection__choice {
-      background-color: #007bff;
-      border: 1px solid #006fe6;
+      {% comment %} background-color: #007bff; {% endcomment %}
+      {% comment %} border: 1px solid #006fe6; {% endcomment %}
+      border: none;
+      background-color : transparent; 
       color: #fff;
-      padding: 0 10px;
+      padding: 0 5px;
       margin-top: 0.31em;
     }
 
@@ -63,6 +65,29 @@
   </div>
 
   <script>
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+    function formatSelection(state) {
+      if (!state.id) {
+        return state.text;
+      }
+      var $state = $('<span style="background-color:' + getRandomColor() + '; color: #fff; padding: 3px 5px; border-radius: 8px;">' + state.text + '</span>');
+      return $state;
+    }
+
+    function formatResult(state) {
+      if (!state.id) {
+        return state.text;
+      }
+      var $result = $('<span style="background-color:' + getRandomColor() + '; color: #fff; padding: 3px 5px; border-radius: 8px;">' + state.text + '</span>');
+      return $result;
+    }
     $(document).ready(function () {
       
 
@@ -70,9 +95,12 @@
         $('.select2-multiple').select2({
           placeholder: "Select technologies",
           tags: true,
-          tokenSeparators: [',', ' ']
+          tokenSeparators: [',', ' '],
+          templateSelection: formatSelection,
+          templateResult: formatResult
         });
       }
+      
 
       $('#addMore').click(function () {
         var formIdx = $('#id_questions-TOTAL_FORMS').val();
