@@ -30,6 +30,11 @@ class Resume(models.Model):
         )
 
 
+class Analysis(models.Model):
+    resume = models.OneToOneField(Resume, on_delete=models.CASCADE)
+    content = models.TextField(blank=True)
+
+
 class QuestionAnswer(models.Model):
     resume = models.ForeignKey(
         Resume, related_name="questions", on_delete=models.CASCADE
